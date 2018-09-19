@@ -1,0 +1,14 @@
+{
+  "name": "egcb",
+  "version": "0.0.1",
+  "description": "el gato con botas bot con discord.js",
+  "author": "morwull",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^11.2.1",
+    "ffmpeg-binaries": "^4.0.0",
+    "opusscript": "0.0.6",
+    "profanities": "^2.6.0",
+    "ytdl-core": "^0.20.4"
+  }
+}
