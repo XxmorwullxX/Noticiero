@@ -3,7 +3,7 @@ const client = new Discord.Client();
 
 client.login(process.env.BOT_TOKEN);
 
-let channelList = ['190818265923059712', '457922428883042315'];
+let channelList = ['190818265923059712', '457922428883042315', '494757740292603904'];
 let channels = [];
 
 client.on('ready', () => {
