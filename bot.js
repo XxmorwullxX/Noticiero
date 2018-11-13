@@ -29,6 +29,10 @@ client.on('message', (message) => {
         return;
     }
 
+    if (message.content.match(new RegExp('\\https://vandal.elespanol.com/', 'g'))) {
+      message.channel.send('🛑 ATENCIÓN, POR FAVOR 🛑\nSoy El Bot Noticiero y mi creador ha puesto esta función para avisar por qué visitar Vandal no es bueno.\nNo soy solo una herramienta para facilitar el trabajo a la hora de informar sino que además quiero que sepáis que páginas como Vandal son las que están haciendo daño a la información con clickbaits y contenidos erroneos (información no contrastada o falsa) por lo que os pido que por favor no sigáis compartiendo su contenido en el server.\nSi os queréis informar de una forma veráz, limpia y con contenido contrastado id a **#noticias_destacadas** o escuchad a los usuarios del server que tienen información.\n\nMuchas gracias, Buen día :wave:');
+    }
+  
     if (message.channel.type.toLowerCase() === 'dm' || message.channel.type.toLowerCase() === 'group') {
         for (const channel of channels) {
             channel.send(message.content);
