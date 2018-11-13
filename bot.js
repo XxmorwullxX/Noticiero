@@ -7,11 +7,8 @@ let channelList = ['190818265923059712', '457922428883042315', '4947577402926039
 let channels = [];
 
 function frasesvandal() {
-  var rand = ['¿Has considerado dejar de entrar en una web que promueve activamente el clickbait como lo es Vandal?', 
-              'Sé que esto te sonará extraño pero por favor, mi dueño me puso aquí no solo para facilitarle el trabajo sino para ofreceros información de calidad',
-              'Por favor, considera dejar de entrar en Vandal y mirate #noticias_destacadas, si ves que la información no te agrada considera colaborar con Mor',
-              '🛑 Eso es un enlace de Vandal, por favor, no ensucies el server con eso 🛑', 
-              'https://i.imgflip.com/2mh8up.jpg'];
+  var rand = ['🛑 ATENCIÓN, POR FAVOR 🛑 \n soy el bot informativo y mi creador ha puesto esta función para avisar por qué visitar Vandal no es bueno. \n Mi creador no solo me utiliza como una herramienta para facilitar su trabajo a la hora de informar sino que además quiere que sepáis que páginas como Vandal son las que están haciendo daño a la información con clickbaits y contenidos erroneos por lo que os pide por favor que no sigáis compartiendo su contenido. \n Si os queréis informar de una forma veráz id a #noticias_destacadas y si no os gusta su contenido ayudad a Mor para que sepa que contenido es el que buscáis. \n\n Muchas gracias, Buen día :wave:', 
+              ];
 
   return rand[Math.floor(Math.random()*rand.length)];
 }
