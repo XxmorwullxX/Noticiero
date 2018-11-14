@@ -25,6 +25,7 @@ client.on('message', (message) => {
         return;
     }
 
+client.on('message', (message) => {
     if (message.content.match(new RegExp(dominiosnegativos.join('|'), 'i'))) {
     message.react('❌');
    }
