@@ -25,9 +25,10 @@ client.on('message', (message) => {
         return;
     }
 
-  client.on("message", (message) => {
+  client.on("message", async message => {
      if (message.content.match(new RegExp(dominiosnegativos.join('|'), 'i'))) {
-    message.react('❌');
+        await message.react('❌');
+        await message.react('👎');
    }
 });
   
