@@ -24,6 +24,31 @@ client.on('message', (message) => {
     if (message.author.id == 491885652846313473) {
         return;
     }
+    
+ client.on('message', (message) => {
+
+  if (message.content.startsWith("elimina")) {
+      let args = message.content.split (" ").slice(1);
+      let author = message.member;
+
+  if (message.author.id == 190402725224251402){
+      if(args[0] > 100){
+        message.delete();
+        message.channel.send("El máximo de mensajes borrados son 100, gracias");
+        return;
+      }
+        message.delete();
+        message.channel.bulkDelete(args[0]);
+        message.channel.send({embed:{
+          color: 0xff0040,
+          description: "He eliminado correctamente los " + args[0] + " mensajes incorrectos, gracias."
+        }})
+      }
+  else {
+    return;
+       }
+    }
+  });
 
   client.on("message", async message => {
      if (message.content.match(new RegExp(dominiosnegativos.join('|'), 'i'))) {
