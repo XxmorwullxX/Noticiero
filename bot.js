@@ -3,7 +3,7 @@ const client = new Discord.Client();
 
 client.login(process.env.BOT_TOKEN);
 
-let channelList = ['457922428883042315', '494757740292603904', '523492613467275270'];
+let channelList = ['457922428883042315', '494757740292603904', '523492613467275270', '268884861832396800'];
 let channels = [];
 
 var dominiosnegativos = ['https://vandal.elespanol.com/', 'https://www.nintenderos.com/']
