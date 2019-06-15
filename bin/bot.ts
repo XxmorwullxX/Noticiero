@@ -4,8 +4,8 @@ import { DiscordClient } from "../src/Service/DiscordClient";
 const run = async () => {
     const client = new DiscordClient();
 
-    // client.attachBot(new DemoBot());
-    client.attachBot(new NoticieroBot());
+    // client.attachBot(new DemoBot("demo"));
+    client.attachBot(new NoticieroBot("noticiero"));
 }
 
 try {

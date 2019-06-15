@@ -1,11 +1,12 @@
 import { GuildMember, Message, TextChannel, Channel } from "discord.js";
 import { Config } from "../Config/Config";
-import { IDiscordBot } from "../IDiscordBot";
+import { Bot } from "./Bot";
 
-export class NoticieroBot extends IDiscordBot {
+type channelData = { id: string, guild: string, name: string };
+
+export class NoticieroBot extends Bot {
 
     readonly commandName: string = "noticiero";
-    readonly name: string = "Noticiero";
     readonly token: string = Config.noticieroToken;
 
     protected onChannelMessage = async (m: Message) => {
@@ -22,36 +23,36 @@ export class NoticieroBot extends IDiscordBot {
             return;
         }
 
-        this.info(args);
+        this.logger.info(args);
         args.shift();
 
+    
         if (command.match(/!noticiero add (.+)/)) {
-            m.mentions.channels.forEach((channel) => {
-                this.addChannel(channel);
-                this.publishToChannel(m.channel.id, "👍🏻");
-            });
+            for (const channel of m.mentions.channels.array()) {
+                await this.addChannel(channel);
+                await this.publishToChannel(m.channel.id, "👍");
+            };
         } else if (command.match(/!noticiero remove (.+)/)) {
-            m.mentions.channels.forEach((channel) => {
-                this.removeChannel(channel);
-                this.publishToChannel(m.channel.id, "👍🏻");
-            });
+            for (const channel of m.mentions.channels.array()) {
+                await this.removeChannel(channel);
+                await this.publishToChannel(m.channel.id, "👍");
+            };
         } else if (command.match(/!noticiero publish (.*)/)) {
             const [, message] = command.match(/!noticiero publish (.*)/);
-            this.publishMessage(message);
-            this.publishToChannel(m.channel.id, "👍🏻");
+            await this.publishMessage(message);
+            await this.publishToChannel(m.channel.id, "👍");
         } else if (command.match(/!noticiero list/)) {
-            this.listChannels(m.channel);
-            this.publishToChannel(m.channel.id, "👍🏻");
+            await this.listChannels(m.channel);
         } else {
-            this.printHelp(m.channel).catch(() => { });
+            await this.printHelp(m.channel);
         }
 
-        this.commit();
+        await this.storage.commit();
     }
 
-    private addChannel(channel: TextChannel) {
+    private async addChannel(channel: TextChannel) {
         type data = { id: string, guild: string, name: string };
-        const channels = ((this.loadData("channels") || []) as data[]);
+        const channels = ((this.storage.get("channels") || []) as data[]);
 
         if (!channels.find((c) => c.id === channel.id)) {
             channels.push({
@@ -60,28 +61,27 @@ export class NoticieroBot extends IDiscordBot {
                 guild: channel.guild.name
             });
 
-            this.saveData("channels", channels);
+            this.storage.put("channels", channels);
         }
     }
 
-    private removeChannel(channel: TextChannel) {
-        type data = { id: string, guild: string, name: string };
-        const channels = (this.loadData("channels") || []) as data[];
-        this.saveData("channels", channels.filter((c) => c.id !== channel.id));
+    private async removeChannel(channel: TextChannel) {
+        const channels = this.storage.get("channels", [] as channelData[]);
+        this.storage.put("channels", channels.filter((c) => c.id !== channel.id));
     }
 
-    private listChannels(channel: Channel) {
-        type data = { id: string, guild: string, name: string };
-        const channels = (this.loadData("channels") || []) as data[];
+    private async listChannels(channel: Channel) {
+        console.log("????");
+        const channels = this.storage.get("channels", [] as channelData[]);
         for (const c of channels) {
-            this.publishToChannel(channel.id, `**#${c.name}** *${c.guild}*`).catch(() => { });
+            await this.publishToChannel(channel.id, `**#${c.name}** *${c.guild}*`)
         }
     }
 
-    private publishMessage(message: string) {
-        const channels = (this.loadData("channels") || []) as string[];
+    private async publishMessage(message: string) {
+        const channels = this.storage.get("channels", [] as channelData[]);
         for (const channel of channels) {
-            this.publishToChannel(channel, message).catch(() => { });
+            await this.publishToChannel(channel.id, message);
         }
     }
 
