@@ -1,6 +1,6 @@
 import { Dropbox } from "dropbox";
-import { Config } from "../Config/Config";
 import fetch from "node-fetch";
+import { Config } from "../Config/Config";
 import { Logger } from "./Logger";
 
 interface Map {
@@ -9,23 +9,35 @@ interface Map {
 
 export class Storage {
 
-    private static storages: Map = {};
-    private static dropbox = new Dropbox({ accessToken: Config.dropboxToken, fetch: fetch });
-
-    public static dummy(): Storage {
+    static dummy(): Storage {
         return new Storage("");
     }
 
-    public static async load(name: string): Promise<Storage> {
+    static async load(name: string): Promise<Storage> {
         this.storages[name] = this.storages[name] || new Storage(name);
 
         return this.storages[name];
     }
 
+    private static readonly storages: Map = {};
+    private static readonly dropbox = new Dropbox({ accessToken: Config.dropboxToken, fetch });
+
     private readonly name: string;
+    // tslint:disable-next-line:no-any
     private readonly storage: any = {};
     private readonly logger: Logger;
     private isDirty = false;
+
+    private constructor(name: string) {
+        this.name = name;
+        this.logger = new Logger(`${name} (Storage)`);
+
+        if (name) {
+            this.init().catch((e) => {
+                this.logger.error(e);
+            });
+        }
+    }
 
     put<T>(key: string, value: T) {
         if (!this.name) {
@@ -68,16 +80,6 @@ export class Storage {
         } catch (e) {
             this.logger.error(e);
         }
-    }
-
-    private constructor(name: string) {
-        this.name = name;
-        this.logger= new Logger(`${name} (Storage)`);
-
-        if (name) {
-            this.init().catch((e) => this.logger.error(e));
-        }
-
     }
 
     private async init() {

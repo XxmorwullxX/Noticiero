@@ -1,4 +1,4 @@
-import { Client, Message, TextChannel, Emoji } from "discord.js";
+import { Client, Emoji, Message, TextChannel } from "discord.js";
 import { Logger } from "../Service/Logger";
 import { Storage } from "../Service/Storage";
 
@@ -38,7 +38,7 @@ export abstract class Bot {
                 return;
             }
 
-            const content = m.content.replace(/\s+/g, ' ').trim();
+            const content = m.content.replace(/\s+/g, " ").trim();
 
             if (m.content.startsWith(`!${this.commandName}`)) {
                 this.onCommandExcuted(content, content.split(" "), m);
@@ -72,7 +72,7 @@ export abstract class Bot {
                 default:
                     this.logger.warning(`Unknown ${m.channel.type}`);
             }
-        })
+        });
     }
 
     protected async publishToChannel(channel: string, message: string) {
@@ -89,10 +89,10 @@ export abstract class Bot {
         return emojis.find((e) => e.name === name);
     }
 
-    protected onReady = async () => { }
-    protected onChannelMessage = async (message: Message) => { }
-    protected onGroupMessage = async (message: Message) => { }
-    protected onPrivateMessage = async (message: Message) => { }
-    protected onMentionedMessage = async (message: Message) => { }
-    protected onCommandExcuted = async (c: string, args: string[], m: Message) => { }
+    protected onReady = async () => { return; };
+    protected onChannelMessage = async (message: Message) => { return; };
+    protected onGroupMessage = async (message: Message) => { return; };
+    protected onPrivateMessage = async (message: Message) => { return; };
+    protected onMentionedMessage = async (message: Message) => { return; };
+    protected onCommandExcuted = async (c: string, args: string[], m: Message) => { return; };
 }
