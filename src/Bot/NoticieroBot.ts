@@ -13,8 +13,13 @@ export class NoticieroBot extends Bot {
         const spamers = ['vandal.elespanol.com', 'nintenderos.com'];
 
         if (m.content.match(new RegExp(spamers.join('|'), 'i'))) {
-            m.react('❌');
-            m.react('👎');
+            const sasel = this.getEmoji("sasel");
+            if (sasel) {
+                await m.react(sasel.id);    
+            }
+            await m.react("🇧");
+            await m.react("🇦");
+            await m.react("🇳");
         }
     }
 
@@ -26,27 +31,24 @@ export class NoticieroBot extends Bot {
         this.logger.info(args);
         args.shift();
 
-    
         if (command.match(/!noticiero add (.+)/)) {
             for (const channel of m.mentions.channels.array()) {
                 await this.addChannel(channel);
-                await this.publishToChannel(m.channel.id, "👍");
             };
         } else if (command.match(/!noticiero remove (.+)/)) {
             for (const channel of m.mentions.channels.array()) {
                 await this.removeChannel(channel);
-                await this.publishToChannel(m.channel.id, "👍");
             };
         } else if (command.match(/!noticiero publish (.*)/)) {
             const [, message] = command.match(/!noticiero publish (.*)/);
             await this.publishMessage(message);
-            await this.publishToChannel(m.channel.id, "👍");
         } else if (command.match(/!noticiero list/)) {
             await this.listChannels(m.channel);
         } else {
             await this.printHelp(m.channel);
         }
 
+        this.confirmMessage(m);
         await this.storage.commit();
     }
 
@@ -94,5 +96,12 @@ export class NoticieroBot extends Bot {
 
     private userHasPermission(member: GuildMember): boolean {
         return member.roles.find((r) => r.name === "noticiero") !== undefined;
+    }
+
+    private async confirmMessage(message: Message) {
+        const canela = this.getEmoji("canela") || this.getEmoji("slowpoke") || { id: "👍" };
+        if (canela) {
+            await message.react(canela.id);
+        }
     }
 }

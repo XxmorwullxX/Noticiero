@@ -1,4 +1,4 @@
-import { Client, Message, TextChannel } from "discord.js";
+import { Client, Message, TextChannel, Emoji } from "discord.js";
 import { Logger } from "../Service/Logger";
 import { Storage } from "../Service/Storage";
 
@@ -82,6 +82,11 @@ export abstract class Bot {
         } else {
             this.logger.error(`Channel ${channel} does not exist or the bot does not have access to.`);
         }
+    }
+
+    protected getEmoji(name: string): Emoji | undefined {
+        const emojis = this.client.emojis.array();
+        return emojis.find((e) => e.name === name);
     }
 
     protected onReady = async () => { }
