@@ -23,12 +23,10 @@ export class NoticieroBot extends Bot {
         }
     }
 
-    protected onCommandExcuted = async (command: string, args: string[], m: Message) => {
+    protected onCommandExcuted = async (command: string, m: Message) => {
         if (!this.userHasPermission(m.member)) {
             return;
         }
-
-        this.logger.info(args);
 
         if (command.match(/!noticiero add (.+)/)) {
             for (const channel of m.mentions.channels.array()) {

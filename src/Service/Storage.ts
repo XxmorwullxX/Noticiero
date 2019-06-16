@@ -47,8 +47,9 @@ export class Storage {
         this.storage[key] = value;
     }
 
-    get<T>(key: string, def: T): T {
+    get<T>(key: string, def?: T): T {
         if (!this.name) {
+            // @ts-ignore
             return def;
         }
         return this.storage[key] || def;
@@ -68,7 +69,7 @@ export class Storage {
         }
 
         this.isDirty = false;
-        this.logger.info("commit", this.storage);
+        this.logger.info("commit", JSON.stringify(this.storage));
         try {
             await Storage.dropbox.filesDelete({
                 path: `/${this.name}.json`

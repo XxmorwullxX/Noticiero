@@ -25,6 +25,6 @@
     "tslint": "^5.17"
   },
   "scripts": {
-    "start": "cp -f config/hooks/* .git/hooks ; ts-node bin/bot.ts"
+    "start": "cp -f config/hooks/* .git/hooks  > /dev/null 2>&1; ts-node bin/bot.ts"
   }
 }
