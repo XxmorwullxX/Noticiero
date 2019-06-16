@@ -52,7 +52,7 @@ export class TwitterBot extends Bot {
     }
 
     private readonly loop = async () => {
-        const remaining = 60000 - (new Date()).getTime() % (60000);
+        const remaining = 300000 - (new Date()).getTime() % (300000);
         this.logger.debug(remaining);
         setTimeout(() => {
             this.loop().catch((e) => {
