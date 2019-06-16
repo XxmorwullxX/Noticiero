@@ -51,7 +51,6 @@
     "no-this-assignment": true,
     "no-unnecessary-initializer": false,
     "no-unused-expression": true,
-    "no-use-before-declare": true,
     "no-var-keyword": true,
     "no-void-expression": true,
     "only-arrow-functions": true,

@@ -40,7 +40,7 @@ export class NoticieroBot extends Bot {
                 await this.removeChannel(channel);
             }
         } else if (command.match(/!noticiero publish (.*)/)) {
-            const [, message] = command.match(/!noticiero publish (.*)/);
+            const [, message] = command.match(/!noticiero publish (.*)/) || ["", ""];
             await this.publishMessage(message);
         } else if (command.match(/!noticiero list/)) {
             await this.listChannels(m.channel);
@@ -53,7 +53,7 @@ export class NoticieroBot extends Bot {
     }
 
     private async addChannel(channel: TextChannel) {
-        const channels = ((this.storage.get("channels") || []) as ChannelData[]);
+        const channels = this.storage.get("channels", [] as ChannelData[]);
 
         if (!channels.find((c) => c.id === channel.id)) {
             channels.push({

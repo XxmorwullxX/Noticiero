@@ -47,7 +47,7 @@ export class Storage {
         this.storage[key] = value;
     }
 
-    get<T>(key: string, def: T = undefined): T {
+    get<T>(key: string, def: T): T {
         if (!this.name) {
             return def;
         }

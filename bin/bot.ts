@@ -1,5 +1,9 @@
 import { NoticieroBot } from "../src/Bot/NoticieroBot";
 import { DiscordClient } from "../src/Service/DiscordClient";
+import { Logger } from "../src/Service/Logger";
+
+const logger = new Logger("Bot Manager");
+logger.info("Starting...");
 
 const run = async () => {
     const client = new DiscordClient();
@@ -11,5 +15,5 @@ const run = async () => {
 try {
     run();
 } catch(e) {
-    console.error(e);
+    logger.error();
 }

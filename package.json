@@ -16,6 +16,7 @@
     "file-system": "^2.2.2",
     "node-fetch": "^2.6.0",
     "ts-node": "^8.2.0",
+    "twitter": "^1.7.1",
     "typescript": "^3.5.2"
   },
   "devDependencies": {

@@ -8,8 +8,8 @@ export abstract class Bot {
 
     protected readonly name: string;
     protected readonly logger: Logger;
-    protected storage: Storage;
-    private client: Client = new Client();
+    protected storage: Storage = Storage.dummy();
+    private readonly client: Client = new Client();
 
     constructor(name: string) {
         // Load persisting service
@@ -17,7 +17,9 @@ export abstract class Bot {
         this.logger = new Logger(name);
         Storage.load(this.name)
             .then((storage) => this.storage = storage)
-            .catch((e) => this.logger.error(e));
+            .catch((e) => {
+                this.logger.error(e);
+            });
     }
 
     async login() {
@@ -90,9 +92,9 @@ export abstract class Bot {
     }
 
     protected onReady = async () => { return; };
-    protected onChannelMessage = async (message: Message) => { return; };
-    protected onGroupMessage = async (message: Message) => { return; };
-    protected onPrivateMessage = async (message: Message) => { return; };
-    protected onMentionedMessage = async (message: Message) => { return; };
-    protected onCommandExcuted = async (c: string, args: string[], m: Message) => { return; };
+    protected onChannelMessage = async (_m: Message) => { return; };
+    protected onGroupMessage = async (_m: Message) => { return; };
+    protected onPrivateMessage = async (_m: Message) => { return; };
+    protected onMentionedMessage = async (_m: Message) => { return; };
+    protected onCommandExcuted = async (_c: string, _args: string[], _m: Message) => { return; };
 }

@@ -1,0 +1,17 @@
+{
+    "author": "ID",
+    "*maxVotes": "1",
+    "title": "",
+    "status": "creating|open|finished",
+    "votes": {
+        "ID": [0, 2, 4]
+    },
+    "questions": [
+        "aaaa",
+        "bbbb",
+        "cccc"
+    ],
+    "*deadline": "2019-08-12T10:00+02:00",
+
+    "actions" : ["create", "delete", "get", "list", "vote", "unvote", "end"]
+}
