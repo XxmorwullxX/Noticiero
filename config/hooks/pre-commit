@@ -1,0 +1,4 @@
+#!/bin/bash
+
+node_modules/tslint/bin/tslint --project . -c tslint.json "src/**/*.ts" && \
+true

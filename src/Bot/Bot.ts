@@ -1,4 +1,4 @@
-import { Client, Message, TextChannel, Emoji } from "discord.js";
+import { Client, Emoji, Message, TextChannel } from "discord.js";
 import { Logger } from "../Service/Logger";
 import { Storage } from "../Service/Storage";
 
@@ -8,8 +8,8 @@ export abstract class Bot {
 
     protected readonly name: string;
     protected readonly logger: Logger;
-    protected storage: Storage;
-    private client: Client = new Client();
+    protected storage: Storage = Storage.dummy();
+    private readonly client: Client = new Client();
 
     constructor(name: string) {
         // Load persisting service
@@ -17,7 +17,9 @@ export abstract class Bot {
         this.logger = new Logger(name);
         Storage.load(this.name)
             .then((storage) => this.storage = storage)
-            .catch((e) => this.logger.error(e));
+            .catch((e) => {
+                this.logger.error(e);
+            });
     }
 
     async login() {
@@ -38,7 +40,7 @@ export abstract class Bot {
                 return;
             }
 
-            const content = m.content.replace(/\s+/g, ' ').trim();
+            const content = m.content.replace(/\s+/g, " ").trim();
 
             if (m.content.startsWith(`!${this.commandName}`)) {
                 this.onCommandExcuted(content, content.split(" "), m);
@@ -72,7 +74,7 @@ export abstract class Bot {
                 default:
                     this.logger.warning(`Unknown ${m.channel.type}`);
             }
-        })
+        });
     }
 
     protected async publishToChannel(channel: string, message: string) {
@@ -89,10 +91,10 @@ export abstract class Bot {
         return emojis.find((e) => e.name === name);
     }
 
-    protected onReady = async () => { }
-    protected onChannelMessage = async (message: Message) => { }
-    protected onGroupMessage = async (message: Message) => { }
-    protected onPrivateMessage = async (message: Message) => { }
-    protected onMentionedMessage = async (message: Message) => { }
-    protected onCommandExcuted = async (c: string, args: string[], m: Message) => { }
+    protected onReady = async () => { return; };
+    protected onChannelMessage = async (_m: Message) => { return; };
+    protected onGroupMessage = async (_m: Message) => { return; };
+    protected onPrivateMessage = async (_m: Message) => { return; };
+    protected onMentionedMessage = async (_m: Message) => { return; };
+    protected onCommandExcuted = async (_c: string, _args: string[], _m: Message) => { return; };
 }
