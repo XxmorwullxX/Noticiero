@@ -29,7 +29,6 @@ export class NoticieroBot extends Bot {
         }
 
         this.logger.info(args);
-        args.shift();
 
         if (command.match(/!noticiero add (.+)/)) {
             for (const channel of m.mentions.channels.array()) {

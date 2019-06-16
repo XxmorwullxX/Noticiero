@@ -1,4 +1,5 @@
 import { NoticieroBot } from "../src/Bot/NoticieroBot";
+import { TwitterBot } from "../src/Bot/TwitterBot";
 import { DiscordClient } from "../src/Service/DiscordClient";
 import { Logger } from "../src/Service/Logger";
 
@@ -10,10 +11,11 @@ const run = async () => {
 
     // client.attachBot(new DemoBot("demo"));
     client.attachBot(new NoticieroBot("noticiero"));
-}
+    client.attachBot(new TwitterBot());
+};
 
 try {
     run();
-} catch(e) {
+} catch (e) {
     logger.error();
 }
