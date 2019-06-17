@@ -20,11 +20,12 @@ interface Tweet {
 export class TwitterBot extends Bot {
     readonly token = Config.noticieroToken;
     readonly commandName = "fanart";
+    readonly loopInterval = 60000;
 
     constructor() {
         super("fanart");
 
-        this.initLoop(300000);
+        this.initLoop(this.loopInterval);
 
         this.registerCommand(this.addUserCommand, /!fanart add user ([a-zA-Z0-9_]+) <#([0-9]+)>/);
         this.registerCommand(this.addHashtagCommand, /!fanart add hashtag ([a-zA-Z0-9_]+) <#([0-9]+)>/);
@@ -81,11 +82,11 @@ export class TwitterBot extends Bot {
         this.storage.delete(ch);
     }
 
-    async printHelp(m: Message) {
+    async printHelpCommand(m: Message) {
         const channel = m.channel;
         await this.publishToChannel(channel.id, "**!fanart add user** *user* *#channel*");
         await this.publishToChannel(channel.id, "**!fanart add hashtag** *hashtag* *#channel*");
-        await this.publishToChannel(channel.id, "**!fanart remove channel *#channel*");
+        await this.publishToChannel(channel.id, "**!fanart remove channel** *#channel*");
         await this.publishToChannel(channel.id, "**!fanart remove user** *user* *#channel*");
         await this.publishToChannel(channel.id, "**!fanart remove hashtag** *hashtag* *#channel*");
     }

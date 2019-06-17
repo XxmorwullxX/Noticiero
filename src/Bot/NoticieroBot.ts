@@ -1,4 +1,4 @@
-import { Channel, Message, TextChannel } from "discord.js";
+import { Message } from "discord.js";
 import { Config } from "../Config/Config";
 import { Bot } from "./Bot";
 
@@ -14,11 +14,12 @@ export class NoticieroBot extends Bot {
 
         this.registerCommand(this.addChannelCommand, /!noticiero add <#([0-9]+)>/);
         this.registerCommand(this.removeChannelCommand, /!noticiero remove <#([0-9]+)>/);
-        this.registerCommand(this.publishMessageCommand, /!noticiero publish ([a-zA-Z0-9_]+)/);
+        this.registerCommand(this.publishMessageCommand, /!noticiero publish (.+)/);
         this.registerCommand(this.listChannelsCommand, /!noticiero (list)/);
     }
 
-    async addChannelCommand(channel: TextChannel) {
+    async addChannelCommand(_ch: string, m: Message) {
+        const channel = m.mentions.channels.first();
         const channels = this.storage.get("channels", [] as ChannelData[]);
 
         if (!channels.find((c) => c.id === channel.id)) {
@@ -32,15 +33,16 @@ export class NoticieroBot extends Bot {
         }
     }
 
-    async removeChannelCommand(channel: TextChannel) {
+    async removeChannelCommand(_ch: string, m: Message) {
+        const channel = m.mentions.channels.first();
         const channels = this.storage.get("channels", [] as ChannelData[]);
         this.storage.put("channels", channels.filter((c) => c.id !== channel.id));
     }
 
-    async listChannelsCommand(channel: Channel) {
+    async listChannelsCommand() {
         const channels = this.storage.get("channels", [] as ChannelData[]);
         for (const c of channels) {
-            await this.publishToChannel(channel.id, `**#${c.name}** *${c.guild}*`);
+            await this.publishToChannel(c.id, `**#${c.name}** *${c.guild}*`);
         }
     }
 
@@ -51,7 +53,8 @@ export class NoticieroBot extends Bot {
         }
     }
 
-    async printHelpCommand(channel: Channel) {
+    async printHelpCommand(m: Message) {
+        const channel = m.channel;
         await this.publishToChannel(channel.id, "**!noticiero add** *#canal*");
         await this.publishToChannel(channel.id, "**!noticiero remove** *#canal*");
         await this.publishToChannel(channel.id, "**!noticiero publish** *#canal*");
