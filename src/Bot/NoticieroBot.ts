@@ -24,28 +24,27 @@ export class NoticieroBot extends Bot {
     }
 
     protected onCommandExcuted = async (command: string, m: Message) => {
-        if (!this.userHasPermission(m.member)) {
-            return;
+        if (!this.hasBotRole(m.member)) {
+            throw new Error("Insufficient permission");
         }
 
-        if (command.match(/!noticiero add (.+)/)) {
-            for (const channel of m.mentions.channels.array()) {
-                await this.addChannel(channel);
-            }
-        } else if (command.match(/!noticiero remove (.+)/)) {
-            for (const channel of m.mentions.channels.array()) {
-                await this.removeChannel(channel);
-            }
-        } else if (command.match(/!noticiero publish (.*)/)) {
-            const [, message] = command.match(/!noticiero publish (.*)/) || ["", ""];
-            await this.publishMessage(message);
-        } else if (command.match(/!noticiero list/)) {
+        const [addChannel] = this.matchCommand(command, /!noticiero add <#([0-9]+)>/);
+        const [removeChannel] = this.matchCommand(command, /!noticiero remove <#([0-9]+)>/);
+        const [publishMessage] = this.matchCommand(command, /!noticiero publish ([a-zA-Z0-9_]+)/);
+        const [list] = this.matchCommand(command, /!noticiero (list)/);
+
+        if (addChannel) {
+            await this.addChannel(m.mentions.channels.first());
+        } else if (removeChannel) {
+            await this.removeChannel(m.mentions.channels.first());
+        } else if (publishMessage) {
+            await this.publishMessage(publishMessage);
+        } else if (list) {
             await this.listChannels(m.channel);
         } else {
             await this.printHelp(m.channel);
         }
 
-        this.confirmMessage(m);
         await this.storage.commit();
     }
 
@@ -87,16 +86,5 @@ export class NoticieroBot extends Bot {
         await this.publishToChannel(channel.id, "**!noticiero remove** *#canal*");
         await this.publishToChannel(channel.id, "**!noticiero publish** *#canal*");
         await this.publishToChannel(channel.id, "**!noticiero list**");
-    }
-
-    private userHasPermission(member: GuildMember): boolean {
-        return member.roles.find((r) => r.name === "noticiero") !== undefined;
-    }
-
-    private async confirmMessage(message: Message) {
-        const canela = this.getEmoji("canela") || this.getEmoji("slowpoke") || { id: "👍" };
-        if (canela) {
-            await message.react(canela.id);
-        }
     }
 }
