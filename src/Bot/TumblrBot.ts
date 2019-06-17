@@ -113,7 +113,7 @@ export class TumblrBot extends Bot {
                             }
                         ],
                         image: {
-                            url: post.photos[0]
+                            url: post.photos[i]
                         },
                         title: post.title,
                         url: post.source
@@ -122,10 +122,10 @@ export class TumblrBot extends Bot {
                 });
             } else {
                 await this.publishToChannel(channel, {
-                    content: "",
+                    color: parseInt(("0x" + post.color.substr(1)), 16),
                     embed: {
                         image: {
-                            url: post.photos[0]
+                            url: post.photos[i]
                         }
                     }
                 });
