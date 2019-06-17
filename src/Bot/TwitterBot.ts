@@ -18,7 +18,7 @@ interface Tweet {
 }
 
 export class TwitterBot extends Bot {
-    static readonly loopInterval = 300000;
+    static readonly loopInterval = 60000;
 
     readonly token = Config.noticieroToken;
     readonly commandName = "fanart";
@@ -98,7 +98,7 @@ export class TwitterBot extends Bot {
         for (const ch of channels) {
             const channel = this.storage.get(ch) as ChannelData;
             for (const user of channel.users) {
-                const tweets = await TwitterClient.instance.readTweetsFromUser(user);
+                const tweets = await TwitterClient.instance.readTweetsFromUser(`@${user}`);
                 for (const tweet of tweets) {
                     if (!channel.medias.find((m) => m.id === tweet.id)) {
                         await this.publishToChannel(channel.id, tweet.url);
@@ -110,7 +110,8 @@ export class TwitterBot extends Bot {
 
             this.logger.debug(channel.hashtags);
             for (const hashtag of channel.hashtags) {
-                const recentTweets = await TwitterClient.instance.readTweetsFromHashtag(`${hashtag} #fanart`, "recent");
+                this.logger.debug("recent");
+                const recentTweets = await TwitterClient.instance.readTweetsFromHashtag(`#${hashtag} #fanart`, "recent");
                 for (const tweet of recentTweets) {
                     this.logger.debug(tweet.url);
                     if (!channel.medias.find((m) => m.id === tweet.id)) {
@@ -120,7 +121,8 @@ export class TwitterBot extends Bot {
                     }
                 }
 
-                const topTweets = await TwitterClient.instance.readTweetsFromHashtag(`${hashtag} #fanart`, "popular");
+                this.logger.debug("popular");
+                const topTweets = await TwitterClient.instance.readTweetsFromHashtag(`#${hashtag} #fanart`, "popular");
                 for (const tweet of topTweets) {
                     this.logger.debug(tweet.url);
                     if (!channel.medias.find((m) => m.id === tweet.id)) {
