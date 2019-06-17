@@ -1,4 +1,4 @@
-import { Client, Emoji, GuildMember, Message, TextChannel } from "discord.js";
+import { Channel, Client, Emoji, GuildMember, Message, TextChannel } from "discord.js";
 import { Logger } from "../Service/Logger";
 import { Storage } from "../Service/Storage";
 
@@ -99,6 +99,10 @@ export abstract class Bot {
         return;
     }
 
+    protected async printHelpCommand(_c: Channel): Promise<boolean | void> {
+        return true;
+    }
+
     protected async initLoop(interval: number) {
         try {
             await this.loop();
@@ -189,6 +193,10 @@ export abstract class Bot {
                 command.cb.apply(this, data);
                 break;
             }
+        }
+
+        if (this.printHelpCommand(m.channel)) {
+            throw new Error("Command not found");
         }
     }
 }
