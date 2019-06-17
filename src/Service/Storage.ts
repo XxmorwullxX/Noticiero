@@ -101,6 +101,7 @@ export class Storage {
 
         // @ts-ignore
         this.storage = JSON.parse(download.fileBinary.toString());
-        this.logger.info(this.storage);
+        // @ts-ignore
+        this.logger.info(download.fileBinary.toString());
     }
 }
