@@ -111,11 +111,9 @@ export abstract class Bot {
         }
 
         const remaining = interval - (new Date()).getTime() % (interval);
-        this.logger.debug(`${Math.floor(remaining / 1000)}s`);
+        this.logger.debug(`Next loop -> ${Math.floor(remaining / 1000)}s`);
         setTimeout(() => {
-            this.loop().catch((e) => {
-                this.logger.error(e.message);
-            });
+            this.initLoop(interval);
         }, remaining);
     }
 
