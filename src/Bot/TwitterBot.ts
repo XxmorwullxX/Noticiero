@@ -1,4 +1,4 @@
-import { Channel, Message, TextChannel } from "discord.js";
+import { Message, TextChannel } from "discord.js";
 import { Config } from "../Config/Config";
 import { TwitterClient } from "../Service/TwitterClient";
 import { Bot } from "./Bot";
@@ -20,52 +20,79 @@ interface Tweet {
 export class TwitterBot extends Bot {
     readonly token = Config.noticieroToken;
     readonly commandName = "fanart";
+    readonly loopInterval = 60000;
 
-    constructor(name: string) {
-        super(name);
+    constructor() {
+        super("fanart");
 
-        this.loop().catch((e) => {
-            this.logger.error(e.message);
-        });
+        this.initLoop(this.loopInterval);
+
+        this.registerCommand(this.addUserCommand, /!fanart add user ([a-zA-Z0-9_]+) <#([0-9]+)>/);
+        this.registerCommand(this.addHashtagCommand, /!fanart add hashtag ([a-zA-Z0-9_]+) <#([0-9]+)>/);
+        this.registerCommand(this.removeUserCommand, /!fanart remove user ([a-zA-Z0-9_]+) <#([0-9]+)>/);
+        this.registerCommand(this.removeHashtagCommand, /!fanart remove hashtag ([a-zA-Z0-9_]+) <#([0-9]+)>/);
+        this.registerCommand(this.removeChannelCommand, /!fanart remove channel <#([0-9]+)>/);
     }
 
-    protected onCommandExcuted = async (command: string, m: Message) => {
-        if (!this.hasBotRole(m.member)) {
-            throw new Error("Insufficient permission");
+    async addUserCommand(author: string, _ch: string, m: Message) {
+        this.registerChannel(m.mentions.channels.first());
+        const channel = this.storage.get(m.mentions.channels.first().id) as ChannelData;
+
+        if (channel.users.indexOf(author) < 0) {
+            channel.users.push(author);
+
+            this.storage.put(m.mentions.channels.first().id, channel);
         }
-
-        const [addUser] = this.matchCommand(command, /!fanart add user ([a-zA-Z0-9_]+) <#([0-9]+)>/);
-        const [addHashTag] = this.matchCommand(command, /!fanart add hashtag ([a-zA-Z0-9_]+) <#([0-9]+)>/);
-        const [removeUser] = this.matchCommand(command, /!fanart remove user ([a-zA-Z0-9_]+) <#([0-9]+)>/);
-        const [removeHashTag] = this.matchCommand(command, /!fanart remove hashtag ([a-zA-Z0-9_]+) <#([0-9]+)>/);
-        const [removeChannel] = this.matchCommand(command, /!fanart remove channel <#([0-9]+)>/);
-
-        if (addUser) {
-            await this.addUser(`@${addUser}`, m.mentions.channels.first());
-        } else if (addHashTag) {
-            await this.addHashtag(`#${addHashTag}`, m.mentions.channels.first());
-        } else if (removeUser) {
-            await this.removeUser(`#${removeUser}`, m.mentions.channels.first());
-        } else if (removeHashTag) {
-            await this.removeHashtag(`#${removeHashTag}`, m.mentions.channels.first());
-        } else if (removeChannel) {
-            await this.removeChannel(m.mentions.channels.first());
-        } else {
-            await this.printHelp(m.channel);
-        }
-
-        await this.storage.commit();
     }
 
-    private readonly loop = async () => {
-        const remaining = 300000 - (new Date()).getTime() % (300000);
-        this.logger.debug(remaining);
-        setTimeout(() => {
-            this.loop().catch((e) => {
-                this.logger.error(e.message);
-            });
-        }, remaining);
+    async addHashtagCommand(hashtag: string, _ch: string, m: Message) {
+        this.registerChannel(m.mentions.channels.first());
+        const channel = this.storage.get(m.mentions.channels.first().id) as ChannelData;
 
+        if (channel.hashtags.indexOf(hashtag) < 0) {
+            channel.hashtags.push(hashtag);
+
+            this.storage.put(m.mentions.channels.first().id, channel);
+        }
+    }
+
+    async removeHashtagCommand(hashtag: string, _ch: string, m: Message) {
+        this.registerChannel(m.mentions.channels.first());
+        const channel = this.storage.get(m.mentions.channels.first().id) as ChannelData;
+
+        if (channel.hashtags.indexOf(hashtag) >= 0) {
+            channel.hashtags = channel.hashtags.filter((h) => h !== hashtag);
+            this.storage.put(m.mentions.channels.first().id, channel);
+        }
+    }
+
+    async removeUserCommand(user: string, _ch: string, m: Message) {
+        this.registerChannel(m.mentions.channels.first());
+        const channel = this.storage.get(m.mentions.channels.first().id) as ChannelData;
+
+        if (channel.users.indexOf(user) >= 0) {
+            channel.users = channel.users.filter((u) => u !== user);
+            this.storage.put(m.mentions.channels.first().id, channel);
+        }
+    }
+
+    async removeChannelCommand(ch: string) {
+        const channels = this.storage.get("_channels", [] as string[]);
+        this.storage.put("_channels", channels.filter((c) => c !== ch));
+        this.storage.delete(ch);
+    }
+
+    async printHelpCommand(m: Message) {
+        const channel = m.channel;
+        await this.publishToChannel(channel.id, "**!fanart add user** *user* *#channel*");
+        await this.publishToChannel(channel.id, "**!fanart add hashtag** *hashtag* *#channel*");
+        await this.publishToChannel(channel.id, "**!fanart remove channel** *#channel*");
+        await this.publishToChannel(channel.id, "**!fanart remove user** *user* *#channel*");
+        await this.publishToChannel(channel.id, "**!fanart remove hashtag** *hashtag* *#channel*");
+    }
+
+    protected readonly loop = async () => {
+        // tslint:disable-next-line:no-console
         const channels = this.storage.get("_channels", [] as string[]);
         for (const ch of channels) {
             const channel = this.storage.get(ch) as ChannelData;
@@ -93,66 +120,6 @@ export class TwitterBot extends Bot {
                 }
             }
         }
-
-        await this.storage.commit();
-    }
-
-    private async addUser(author: string, ch: TextChannel) {
-        this.registerChannel(ch);
-        const channel = this.storage.get(ch.id) as ChannelData;
-
-        await this.publishToChannel(ch.id, `Buenas, a partir de ahora voy a poner fanarts retwiteados por ${author}`);
-
-        if (channel.users.indexOf(author) < 0) {
-            channel.users.push(author);
-
-            this.storage.put(ch.id, channel);
-        }
-    }
-
-    private async addHashtag(hashtag: string, ch: TextChannel) {
-        this.registerChannel(ch);
-        const channel = this.storage.get(ch.id) as ChannelData;
-
-        if (channel.hashtags.indexOf(hashtag) < 0) {
-            channel.hashtags.push(hashtag);
-
-            this.storage.put(ch.id, channel);
-        }
-    }
-
-    private async removeHashtag(hashtag: string, ch: TextChannel) {
-        this.registerChannel(ch);
-        const channel = this.storage.get(ch.id) as ChannelData;
-
-        if (channel.hashtags.indexOf(hashtag) >= 0) {
-            channel.hashtags = channel.hashtags.filter((h) => h !== hashtag);
-            this.storage.put(ch.id, channel);
-        }
-    }
-
-    private async removeUser(user: string, ch: TextChannel) {
-        this.registerChannel(ch);
-        const channel = this.storage.get(ch.id) as ChannelData;
-
-        if (channel.users.indexOf(user) >= 0) {
-            channel.users = channel.users.filter((u) => u !== user);
-            this.storage.put(ch.id, channel);
-        }
-    }
-
-    private async removeChannel(ch: TextChannel) {
-        const channels = this.storage.get("_channels", [] as string[]);
-        this.storage.put("_channels", channels.filter((c) => c !== ch.id));
-        this.storage.delete(ch.id);
-    }
-
-    private async printHelp(channel: Channel) {
-        await this.publishToChannel(channel.id, "**!fanart add user** *user* *#channel*");
-        await this.publishToChannel(channel.id, "**!fanart add hashtag** *hashtag* *#channel*");
-        await this.publishToChannel(channel.id, "**!fanart remove channel *#channel*");
-        await this.publishToChannel(channel.id, "**!fanart remove user** *user* *#channel*");
-        await this.publishToChannel(channel.id, "**!fanart remove hashtag** *hashtag* *#channel*");
     }
 
     private registerChannel(ch: TextChannel) {

@@ -2,10 +2,16 @@ import { Client, Emoji, GuildMember, Message, TextChannel } from "discord.js";
 import { Logger } from "../Service/Logger";
 import { Storage } from "../Service/Storage";
 
+interface Command {
+    r: RegExp;
+    // tslint:disable-next-line:ban-types
+    cb: Function;
+}
+
 export abstract class Bot {
     abstract readonly token: string;
     abstract readonly commandName: string;
-
+    protected readonly commands: Command[] = [];
     protected readonly name: string;
     protected readonly logger: Logger;
     protected storage: Storage = Storage.dummy();
@@ -45,7 +51,6 @@ export abstract class Bot {
 
                 if (m.content.startsWith(`!${this.commandName}`)) {
                     await this.waiting(m);
-                    this.logger.info(content);
                     await this.onCommandExcuted(content, m);
                     await this.approve(m);
                     return;
@@ -57,7 +62,6 @@ export abstract class Bot {
 
                 if (m.mentions.users.find((u) => u.id === this.client.user.id)) {
                     await this.waiting(m);
-                    this.logger.info(m.content);
                     await this.onMentionedMessage(m);
                     await this.approve(m);
                     return;
@@ -84,10 +88,33 @@ export abstract class Bot {
                 }
                 this.approve(m);
             } catch (e) {
-                this.logger.error(e.message);
+                this.logger.error(e);
                 this.reject(m);
             }
         });
+    }
+
+    protected async loop() {
+        return;
+    }
+
+    protected async printHelpCommand(_m: Message): Promise<boolean | void> {
+        return true;
+    }
+
+    protected async initLoop(interval: number) {
+        try {
+            await this.loop();
+            await this.storage.commit();
+        } catch (e) {
+            this.logger.error(e);
+        }
+
+        const remaining = interval - (new Date()).getTime() % (interval);
+        this.logger.debug(`Next loop -> ${Math.floor(remaining / 1000)}s`);
+        setTimeout(() => {
+            this.initLoop(interval);
+        }, remaining);
     }
 
     protected async publishToChannel(channel: string, message: string) {
@@ -115,12 +142,16 @@ export abstract class Bot {
         return u.roles.find((r) => r.name === "fanart") !== null;
     }
 
+    // tslint:disable-next-line:ban-types
+    protected registerCommand(cb: Function, r: RegExp) {
+        this.commands.push({ cb, r });
+    }
+
     protected onReady = async () => { return; };
     protected onChannelMessage = async (_m: Message) => { return; };
     protected onGroupMessage = async (_m: Message) => { return; };
     protected onPrivateMessage = async (_m: Message) => { return; };
     protected onMentionedMessage = async (_m: Message) => { return; };
-    protected onCommandExcuted = async (_c: string, _m: Message) => { return; };
 
     private async approve(m: Message) {
         const canela = this.getEmoji("canela") || { id: "👍" };
@@ -128,11 +159,13 @@ export abstract class Bot {
             await m.react(canela.id);
         }
         await this.removeWaiting(m);
+        this.storage.commit();
     }
 
     private async reject(m: Message) {
         await m.react("👎");
         await this.removeWaiting(m);
+        this.storage.commit();
     }
 
     private async waiting(m: Message) {
@@ -145,6 +178,23 @@ export abstract class Bot {
                 r.remove();
                 break;
             }
+        }
+    }
+
+    private async onCommandExcuted(c: string, m: Message) {
+        this.logger.info(c);
+        for (const command of this.commands) {
+            const data = this.matchCommand(c, command.r);
+            if (data[0]) {
+                // @ts-ignore
+                data.push(m);
+                command.cb.apply(this, data);
+                return;
+            }
+        }
+
+        if (await this.printHelpCommand(m)) {
+            throw new Error("Command not found");
         }
     }
 }
