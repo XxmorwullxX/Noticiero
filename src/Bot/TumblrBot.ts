@@ -79,7 +79,7 @@ export class TumblrBot extends Bot {
             this.logger.debug(channel.tags);
             for (const tag of channel.tags) {
                 this.logger.debug(tag);
-                const posts = await TumblrClient.instance.get(`${tag}`);
+                const posts = await TumblrClient.instance.get(`${tag} fanart`);
 
                 for (const post of posts) {
                     if (!channel.medias.find((m) => m === post.id)) {
