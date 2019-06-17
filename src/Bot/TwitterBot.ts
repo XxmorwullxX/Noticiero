@@ -109,8 +109,18 @@ export class TwitterBot extends Bot {
 
             this.logger.debug(channel.hashtags);
             for (const hashtag of channel.hashtags) {
-                const tweets = await TwitterClient.instance.readTweetsFromHashtag(`${hashtag} #fanart -filter:retweets`);
-                for (const tweet of tweets) {
+                const recentTweets = await TwitterClient.instance.readTweetsFromHashtag(`${hashtag} #fanart`, "recent");
+                for (const tweet of recentTweets) {
+                    this.logger.debug(tweet.url);
+                    if (!channel.medias.find((m) => m.id === tweet.id)) {
+                        await this.publishToChannel(channel.id, tweet.url);
+                        channel.medias.push(tweet);
+                        this.storage.put(ch, channel);
+                    }
+                }
+
+                const topTweets = await TwitterClient.instance.readTweetsFromHashtag(`${hashtag} #fanart`, "popular");
+                for (const tweet of topTweets) {
                     this.logger.debug(tweet.url);
                     if (!channel.medias.find((m) => m.id === tweet.id)) {
                         await this.publishToChannel(channel.id, tweet.url);
