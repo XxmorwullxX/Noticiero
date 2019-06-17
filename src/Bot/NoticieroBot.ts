@@ -12,10 +12,10 @@ export class NoticieroBot extends Bot {
     constructor() {
         super("noticiero");
 
-        this.registerCommand(this.addChannelCommand, /^!noticiero add <#([0-9]+)>$/);
-        this.registerCommand(this.removeChannelCommand, /^!noticiero remove <#([0-9]+)>$/);
-        this.registerCommand(this.publishMessageCommand, /^!noticiero publish (.+)$/);
-        this.registerCommand(this.listChannelsCommand, /^!noticiero (list)$/);
+        this.registerCommand(this.addChannelCommand, /^!noticiero add <#([0-9]+)>$/i);
+        this.registerCommand(this.removeChannelCommand, /^!noticiero remove <#([0-9]+)>$/i);
+        this.registerCommand(this.publishMessageCommand, /^!noticiero publish (.+)$/i);
+        this.registerCommand(this.listChannelsCommand, /^!noticiero (list)$/i);
     }
 
     async addChannelCommand(_ch: string, m: Message) {

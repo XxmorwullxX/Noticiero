@@ -115,7 +115,8 @@ export abstract class Bot {
         }, remaining);
     }
 
-    protected async publishToChannel(channel: string, message: string) {
+    // tslint:disable-next-line:no-any
+    protected async publishToChannel(channel: string, message: any) {
         const c = this.client.channels.get(channel) as TextChannel;
         if (c) {
             c.send(message);

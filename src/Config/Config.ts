@@ -13,4 +13,10 @@ export class Config {
         consumer_key: process.env.TWITTER_CONSUMER_KEY || "",
         consumer_secret: process.env.TWITTER_CONSUMER_SECRET || ""
     };
+    static readonly tumblr = {
+        consumer_key: process.env.TUMBLR_CONSUMER_KEY || "",
+        consumer_secret: process.env.TUMBLR_CONSUMER_SECRET || "",
+        token: process.env.TUMBLR_ACCESS_TOKEN_KEY || "",
+        token_secret: process.env.TUMBLR_ACCESS_TOKEN_SECRET || ""
+    };
 }
