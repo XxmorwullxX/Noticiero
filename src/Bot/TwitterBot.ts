@@ -18,14 +18,15 @@ interface Tweet {
 }
 
 export class TwitterBot extends Bot {
+    static readonly loopInterval = 300000;
+
     readonly token = Config.noticieroToken;
     readonly commandName = "fanart";
-    readonly loopInterval = 60000;
 
     constructor() {
         super("fanart");
 
-        this.initLoop(this.loopInterval);
+        this.initLoop(TwitterBot.loopInterval);
 
         this.registerCommand(this.addUserCommand, /!fanart add user ([a-zA-Z0-9_]+) <#([0-9]+)>/);
         this.registerCommand(this.addHashtagCommand, /!fanart add hashtag ([a-zA-Z0-9_]+) <#([0-9]+)>/);
