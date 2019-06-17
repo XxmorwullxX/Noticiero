@@ -28,11 +28,11 @@ export class TwitterBot extends Bot {
 
         this.initLoop(TwitterBot.loopInterval);
 
-        this.registerCommand(this.addUserCommand, /^!fanart add user ([a-zA-Z0-9_]+) <#([0-9]+)>$/);
-        this.registerCommand(this.addHashtagCommand, /^!fanart add hashtag ([a-zA-Z0-9_]+) <#([0-9]+)>$/);
+        this.registerCommand(this.addUserCommand, /^!fanart add user ([a-zA-Z0-9_]+) <#([0-9]+)>$/gi);
+        this.registerCommand(this.addHashtagCommand, /^!fanart add hashtag ([a-zA-Z0-9_]+) <#([0-9]+)>$/gi);
         this.registerCommand(this.removeUserCommand, /^!fanart remove user ([a-zA-Z0-9_]+) <#([0-9]+)>$/);
-        this.registerCommand(this.removeHashtagCommand, /^!fanart remove hashtag ([a-zA-Z0-9_]+) <#([0-9]+)>$/);
-        this.registerCommand(this.removeChannelCommand, /^!fanart remove channel <#([0-9]+)>$/);
+        this.registerCommand(this.removeHashtagCommand, /^!fanart remove hashtag ([a-zA-Z0-9_]+) <#([0-9]+)>$/gi);
+        this.registerCommand(this.removeChannelCommand, /^!fanart remove channel <#([0-9]+)>$/gi);
     }
 
     async addUserCommand(author: string, _ch: string, m: Message) {
