@@ -7,6 +7,10 @@ export class DemoBot extends Bot {
     readonly commandName: string = "demo";
     readonly token: string = Config.noticieroToken;
 
+    constructor() {
+        super("demo");
+    }
+
     protected onChannelMessage = async (m: Message) => {
         this.logger.debug("channel", m.content);
     }
@@ -21,9 +25,5 @@ export class DemoBot extends Bot {
 
     protected onMentionedMessage = async (m: Message) => {
         this.logger.debug("referenced", m.content);
-    }
-
-    protected onCommandExcuted = async (c: string, args: string[], m: Message) => {
-        this.logger.debug("command", c, args);
     }
 }

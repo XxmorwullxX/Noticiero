@@ -9,9 +9,9 @@ logger.info("Starting...");
 const run = async () => {
     const client = new DiscordClient();
 
-    // client.attachBot(new DemoBot("demo"));
-    client.attachBot(new NoticieroBot("noticiero"));
-    client.attachBot(new TwitterBot("fanart"));
+    // client.attachBot(new DemoBot(demo));
+    client.attachBot(new NoticieroBot());
+    client.attachBot(new TwitterBot());
 };
 
 try {
