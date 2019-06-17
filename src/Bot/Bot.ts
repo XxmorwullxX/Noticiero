@@ -67,7 +67,6 @@ export abstract class Bot {
                     return;
                 }
 
-                await this.waiting(m);
                 switch (m.channel.type) {
                     case "text":
                         await this.onChannelMessage(m);
@@ -86,7 +85,6 @@ export abstract class Bot {
                     default:
                         this.logger.warning(`Unknown ${m.channel.type}`);
                 }
-                this.approve(m);
             } catch (e) {
                 this.logger.error(e);
                 this.reject(m);

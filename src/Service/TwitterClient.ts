@@ -46,10 +46,12 @@ export class TwitterClient {
         });
     }
 
-    async readTweetsFromHashtag(q: string): Promise<Tweet[]> {
+    async readTweetsFromHashtag(q: string, resultType?: "mixed" | "recent" | "popular"): Promise<Tweet[]> {
         return new Promise((resolve, reject) => {
             this.twitter.get("search/tweets", {
-                q
+                count: 20,
+                q: `${q} -filter:retweet -filter:nativeretweets`,
+                result_type: resultType
             }, (error, response: Twitter.ResponseData) => {
                 if (error) {
                     reject(error);
