@@ -122,8 +122,8 @@ export class TumblrBot extends Bot {
                 });
             } else {
                 await this.publishToChannel(channel, {
-                    color: parseInt(("0x" + post.color.substr(1)), 16),
                     embed: {
+                        color: parseInt(("0x" + post.color.substr(1)), 16),
                         image: {
                             url: post.photos[i]
                         }
