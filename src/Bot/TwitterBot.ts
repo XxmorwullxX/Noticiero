@@ -26,10 +26,6 @@ export class TwitterBot extends Bot {
 
         this.initLoop(300000);
 
-        this.loop().catch((e) => {
-            this.logger.error(e.message);
-        });
-
         this.registerCommand(this.addUserCommand, /!fanart add user ([a-zA-Z0-9_]+) <#([0-9]+)>/);
         this.registerCommand(this.addHashtagCommand, /!fanart add hashtag ([a-zA-Z0-9_]+) <#([0-9]+)>/);
         this.registerCommand(this.removeUserCommand, /!fanart remove user ([a-zA-Z0-9_]+) <#([0-9]+)>/);
