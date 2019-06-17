@@ -5,5 +5,15 @@
             "name": "name",
             "id": "id"
         }
+    ],
+    "channel_id" : [
+        {
+            "users": ["zelda_fanart"],
+            "hashtags": ["#BreathOfTheWild2"],
+            "medias": ["xxxx"],
+            "guild": "name",
+            "name": "name",
+            "id": "id"
+        }
     ]
 }

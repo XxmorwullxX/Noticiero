@@ -11,7 +11,7 @@ const run = async () => {
 
     // client.attachBot(new DemoBot("demo"));
     client.attachBot(new NoticieroBot("noticiero"));
-    client.attachBot(new TwitterBot());
+    client.attachBot(new TwitterBot("fanart"));
 };
 
 try {
