@@ -89,7 +89,7 @@ export abstract class Bot {
                 }
                 this.approve(m);
             } catch (e) {
-                this.logger.error(e.message);
+                this.logger.error(e);
                 this.reject(m);
             }
         });
@@ -107,7 +107,7 @@ export abstract class Bot {
         try {
             await this.loop();
         } catch (e) {
-            this.logger.error(e.message);
+            this.logger.error(e);
         }
 
         const remaining = interval - (new Date()).getTime() % (interval);
@@ -189,7 +189,7 @@ export abstract class Bot {
                 // @ts-ignore
                 data.push(m);
                 command.cb.apply(this, data);
-                break;
+                return;
             }
         }
 

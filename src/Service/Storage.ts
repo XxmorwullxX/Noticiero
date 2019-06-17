@@ -69,7 +69,6 @@ export class Storage {
         }
 
         this.isDirty = false;
-        this.logger.info("commit", JSON.stringify(this.storage));
         try {
             await Storage.dropbox.filesDelete({
                 path: `/${this.name}.json`
@@ -101,7 +100,5 @@ export class Storage {
 
         // @ts-ignore
         this.storage = JSON.parse(download.fileBinary.toString());
-        // @ts-ignore
-        this.logger.info(download.fileBinary.toString());
     }
 }

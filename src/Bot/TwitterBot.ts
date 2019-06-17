@@ -1,4 +1,4 @@
-import { Channel, TextChannel } from "discord.js";
+import { Message, TextChannel } from "discord.js";
 import { Config } from "../Config/Config";
 import { TwitterClient } from "../Service/TwitterClient";
 import { Bot } from "./Bot";
@@ -33,57 +33,56 @@ export class TwitterBot extends Bot {
         this.registerCommand(this.removeChannelCommand, /!fanart remove channel <#([0-9]+)>/);
     }
 
-    async addUserCommand(author: string, ch: TextChannel) {
-        this.registerChannel(ch);
-        const channel = this.storage.get(ch.id) as ChannelData;
-
-        await this.publishToChannel(ch.id, `Buenas, a partir de ahora voy a poner fanarts retwiteados por ${author}`);
+    async addUserCommand(author: string, _ch: string, m: Message) {
+        this.registerChannel(m.mentions.channels.first());
+        const channel = this.storage.get(m.mentions.channels.first().id) as ChannelData;
 
         if (channel.users.indexOf(author) < 0) {
             channel.users.push(author);
 
-            this.storage.put(ch.id, channel);
+            this.storage.put(m.mentions.channels.first().id, channel);
         }
     }
 
-    async addHashtagCommand(hashtag: string, ch: TextChannel) {
-        this.registerChannel(ch);
-        const channel = this.storage.get(ch.id) as ChannelData;
+    async addHashtagCommand(hashtag: string, _ch: string, m: Message) {
+        this.registerChannel(m.mentions.channels.first());
+        const channel = this.storage.get(m.mentions.channels.first().id) as ChannelData;
 
         if (channel.hashtags.indexOf(hashtag) < 0) {
             channel.hashtags.push(hashtag);
 
-            this.storage.put(ch.id, channel);
+            this.storage.put(m.mentions.channels.first().id, channel);
         }
     }
 
-    async removeHashtagCommand(hashtag: string, ch: TextChannel) {
-        this.registerChannel(ch);
-        const channel = this.storage.get(ch.id) as ChannelData;
+    async removeHashtagCommand(hashtag: string, _ch: string, m: Message) {
+        this.registerChannel(m.mentions.channels.first());
+        const channel = this.storage.get(m.mentions.channels.first().id) as ChannelData;
 
         if (channel.hashtags.indexOf(hashtag) >= 0) {
             channel.hashtags = channel.hashtags.filter((h) => h !== hashtag);
-            this.storage.put(ch.id, channel);
+            this.storage.put(m.mentions.channels.first().id, channel);
         }
     }
 
-    async removeUserCommand(user: string, ch: TextChannel) {
-        this.registerChannel(ch);
-        const channel = this.storage.get(ch.id) as ChannelData;
+    async removeUserCommand(user: string, _ch: string, m: Message) {
+        this.registerChannel(m.mentions.channels.first());
+        const channel = this.storage.get(m.mentions.channels.first().id) as ChannelData;
 
         if (channel.users.indexOf(user) >= 0) {
             channel.users = channel.users.filter((u) => u !== user);
-            this.storage.put(ch.id, channel);
+            this.storage.put(m.mentions.channels.first().id, channel);
         }
     }
 
-    async removeChannelCommand(ch: TextChannel) {
+    async removeChannelCommand(ch: string) {
         const channels = this.storage.get("_channels", [] as string[]);
-        this.storage.put("_channels", channels.filter((c) => c !== ch.id));
-        this.storage.delete(ch.id);
+        this.storage.put("_channels", channels.filter((c) => c !== ch));
+        this.storage.delete(ch);
     }
 
-    async printHelp(channel: Channel) {
+    async printHelp(m: Message) {
+        const channel = m.channel;
         await this.publishToChannel(channel.id, "**!fanart add user** *user* *#channel*");
         await this.publishToChannel(channel.id, "**!fanart add hashtag** *hashtag* *#channel*");
         await this.publishToChannel(channel.id, "**!fanart remove channel *#channel*");
@@ -92,6 +91,7 @@ export class TwitterBot extends Bot {
     }
 
     protected readonly loop = async () => {
+        // tslint:disable-next-line:no-console
         const channels = this.storage.get("_channels", [] as string[]);
         for (const ch of channels) {
             const channel = this.storage.get(ch) as ChannelData;
