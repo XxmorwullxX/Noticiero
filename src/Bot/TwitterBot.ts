@@ -18,7 +18,7 @@ interface Tweet {
 }
 
 export class TwitterBot extends Bot {
-    static readonly loopInterval = 60000;
+    static readonly loopInterval = 300000;
 
     readonly token = Config.noticieroToken;
     readonly commandName = "fanart";
@@ -28,11 +28,11 @@ export class TwitterBot extends Bot {
 
         this.initLoop(TwitterBot.loopInterval);
 
-        this.registerCommand(this.addUserCommand, /!fanart add user ([a-zA-Z0-9_]+) <#([0-9]+)>/);
-        this.registerCommand(this.addHashtagCommand, /!fanart add hashtag ([a-zA-Z0-9_]+) <#([0-9]+)>/);
-        this.registerCommand(this.removeUserCommand, /!fanart remove user ([a-zA-Z0-9_]+) <#([0-9]+)>/);
-        this.registerCommand(this.removeHashtagCommand, /!fanart remove hashtag ([a-zA-Z0-9_]+) <#([0-9]+)>/);
-        this.registerCommand(this.removeChannelCommand, /!fanart remove channel <#([0-9]+)>/);
+        this.registerCommand(this.addUserCommand, /^!fanart add user ([a-zA-Z0-9_]+) <#([0-9]+)>$/);
+        this.registerCommand(this.addHashtagCommand, /^!fanart add hashtag ([a-zA-Z0-9_]+) <#([0-9]+)>$/);
+        this.registerCommand(this.removeUserCommand, /^!fanart remove user ([a-zA-Z0-9_]+) <#([0-9]+)>$/);
+        this.registerCommand(this.removeHashtagCommand, /^!fanart remove hashtag ([a-zA-Z0-9_]+) <#([0-9]+)>$/);
+        this.registerCommand(this.removeChannelCommand, /^!fanart remove channel <#([0-9]+)>$/);
     }
 
     async addUserCommand(author: string, _ch: string, m: Message) {
@@ -93,7 +93,6 @@ export class TwitterBot extends Bot {
     }
 
     protected readonly loop = async () => {
-        // tslint:disable-next-line:no-console
         const channels = this.storage.get("_channels", [] as string[]);
         for (const ch of channels) {
             const channel = this.storage.get(ch) as ChannelData;
@@ -110,20 +109,8 @@ export class TwitterBot extends Bot {
 
             this.logger.debug(channel.hashtags);
             for (const hashtag of channel.hashtags) {
-                this.logger.debug("recent");
-                const recentTweets = await TwitterClient.instance.readTweetsFromHashtag(`#${hashtag} #fanart`, "recent");
+                const recentTweets = await TwitterClient.instance.readTweetsFromHashtag(`#${hashtag} #fanart`);
                 for (const tweet of recentTweets) {
-                    this.logger.debug(tweet.url);
-                    if (!channel.medias.find((m) => m.id === tweet.id)) {
-                        await this.publishToChannel(channel.id, tweet.url);
-                        channel.medias.push(tweet);
-                        this.storage.put(ch, channel);
-                    }
-                }
-
-                this.logger.debug("popular");
-                const topTweets = await TwitterClient.instance.readTweetsFromHashtag(`#${hashtag} #fanart`, "popular");
-                for (const tweet of topTweets) {
                     this.logger.debug(tweet.url);
                     if (!channel.medias.find((m) => m.id === tweet.id)) {
                         await this.publishToChannel(channel.id, tweet.url);

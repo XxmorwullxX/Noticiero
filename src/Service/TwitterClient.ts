@@ -50,7 +50,7 @@ export class TwitterClient {
         return new Promise((resolve, reject) => {
             this.twitter.get("search/tweets", {
                 count: 20,
-                q: `${q}`,
+                q: `${q} -filter:retweet -filter:nativeretweets`,
                 result_type: resultType
             }, (error, response: Twitter.ResponseData) => {
                 if (error) {
