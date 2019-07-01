@@ -57,7 +57,7 @@ export class NoticieroBot extends Bot {
         const channel = m.channel;
         await this.publishToChannel(channel.id, "**!noticiero add** *#canal*");
         await this.publishToChannel(channel.id, "**!noticiero remove** *#canal*");
-        await this.publishToChannel(channel.id, "**!noticiero publish** *#canal*");
+        await this.publishToChannel(channel.id, "**!noticiero publish** *piece of news here*");
         await this.publishToChannel(channel.id, "**!noticiero list**");
     }
 
