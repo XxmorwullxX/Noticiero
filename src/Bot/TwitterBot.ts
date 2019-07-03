@@ -28,25 +28,12 @@ export class TwitterBot extends Bot {
 
         this.initLoop(TwitterBot.loopInterval);
 
-        this.registerCommand(this.addUserCommand, /^!twitter add user ([a-zA-Z0-9_]+) <#([0-9]+)>$/i);
-        this.registerCommand(this.addHashtagCommand, /^!twitter add hashtag ([a-zA-Z0-9_]+) <#([0-9]+)>$/i);
-        this.registerCommand(this.removeUserCommand, /^!twitter remove user ([a-zA-Z0-9_]+) <#([0-9]+)>$/);
-        this.registerCommand(this.removeHashtagCommand, /^!twitter remove hashtag ([a-zA-Z0-9_]+) <#([0-9]+)>$/i);
-        this.registerCommand(this.removeChannelCommand, /^!twitter remove channel <#([0-9]+)>$/i);
+        this.registerCommand(this.addTagCommand, /^!twitter add ([a-zA-Z0-9_]+) <#([0-9]+)>$/i);
+        this.registerCommand(this.removeTagCommand, /^!twitter remove ([a-zA-Z0-9_]+) <#([0-9]+)>$/);
+        this.registerCommand(this.removeChannelCommand, /^!twitter remove <#([0-9]+)>$/i);
     }
 
-    async addUserCommand(author: string, _ch: string, m: Message) {
-        this.registerChannel(m.mentions.channels.first());
-        const channel = this.storage.get(m.mentions.channels.first().id) as ChannelData;
-
-        if (channel.users.indexOf(author) < 0) {
-            channel.users.push(author);
-
-            this.storage.put(m.mentions.channels.first().id, channel);
-        }
-    }
-
-    async addHashtagCommand(hashtag: string, _ch: string, m: Message) {
+    async addTagCommand(hashtag: string, _ch: string, m: Message) {
         this.registerChannel(m.mentions.channels.first());
         const channel = this.storage.get(m.mentions.channels.first().id) as ChannelData;
 
@@ -57,22 +44,12 @@ export class TwitterBot extends Bot {
         }
     }
 
-    async removeHashtagCommand(hashtag: string, _ch: string, m: Message) {
+    async removeTagCommand(hashtag: string, _ch: string, m: Message) {
         this.registerChannel(m.mentions.channels.first());
         const channel = this.storage.get(m.mentions.channels.first().id) as ChannelData;
 
         if (channel.hashtags.indexOf(hashtag) >= 0) {
             channel.hashtags = channel.hashtags.filter((h) => h !== hashtag);
-            this.storage.put(m.mentions.channels.first().id, channel);
-        }
-    }
-
-    async removeUserCommand(user: string, _ch: string, m: Message) {
-        this.registerChannel(m.mentions.channels.first());
-        const channel = this.storage.get(m.mentions.channels.first().id) as ChannelData;
-
-        if (channel.users.indexOf(user) >= 0) {
-            channel.users = channel.users.filter((u) => u !== user);
             this.storage.put(m.mentions.channels.first().id, channel);
         }
     }
@@ -85,11 +62,9 @@ export class TwitterBot extends Bot {
 
     async printHelpCommand(m: Message) {
         const channel = m.channel;
-        await this.publishToChannel(channel.id, "**!twitter add user** *user* *#channel*");
-        await this.publishToChannel(channel.id, "**!twitter add hashtag** *hashtag* *#channel*");
-        await this.publishToChannel(channel.id, "**!twitter remove channel** *#channel*");
-        await this.publishToChannel(channel.id, "**!twitter remove user** *user* *#channel*");
-        await this.publishToChannel(channel.id, "**!twitter remove hashtag** *hashtag* *#channel*");
+        await this.publishToChannel(channel.id, "**!twitter add** *tag* *#channel*");
+        await this.publishToChannel(channel.id, "**!twitter remove** *tag* *#channel*");
+        await this.publishToChannel(channel.id, "**!twitter remove** *#channel*");
     }
 
     protected readonly loop = async () => {

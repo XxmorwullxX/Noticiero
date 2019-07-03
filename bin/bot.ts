@@ -1,3 +1,4 @@
+import { ElGatoBot } from "../src/Bot/ElGatoBot";
 import { NoticieroBot } from "../src/Bot/NoticieroBot";
 import { TumblrBot } from "../src/Bot/TumblrBot";
 import { TwitterBot } from "../src/Bot/TwitterBot";
@@ -14,6 +15,7 @@ const run = async () => {
     client.attachBot(new NoticieroBot());
     client.attachBot(new TumblrBot());
     client.attachBot(new TwitterBot());
+    client.attachBot(new ElGatoBot());
 };
 
 try {
