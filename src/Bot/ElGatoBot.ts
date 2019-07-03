@@ -29,7 +29,7 @@ export class ElGatoBot extends Bot {
                 // @ts-ignore
                 if (message.content.match(new RegExp(sentences[group].triggers.join("|"), "i"))) {
                     // @ts-ignore
-                    const options = sentences[group].triggers.responses;
+                    const options = sentences[group].responses;
                     this.sendMessage(options, message.channel);
                     return;
                 }
