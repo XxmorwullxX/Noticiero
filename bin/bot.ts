@@ -1,4 +1,6 @@
+import { ElGatoBot } from "../src/Bot/ElGatoBot";
 import { NoticieroBot } from "../src/Bot/NoticieroBot";
+import { TumblrBot } from "../src/Bot/TumblrBot";
 import { TwitterBot } from "../src/Bot/TwitterBot";
 import { DiscordClient } from "../src/Service/DiscordClient";
 import { Logger } from "../src/Service/Logger";
@@ -11,7 +13,9 @@ const run = async () => {
 
     // client.attachBot(new DemoBot(demo));
     client.attachBot(new NoticieroBot());
+    client.attachBot(new TumblrBot());
     client.attachBot(new TwitterBot());
+    client.attachBot(new ElGatoBot());
 };
 
 try {
