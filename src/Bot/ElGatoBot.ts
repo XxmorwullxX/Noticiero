@@ -6,7 +6,7 @@ import { Bot } from "./Bot";
 export class ElGatoBot extends Bot {
 
     readonly commandName: string = "elgatoconbotas";
-    readonly token: string = Config.noticieroToken;
+    readonly token: string = Config.elGatoToken;
 
     constructor() {
         super("elgatoconbotas");

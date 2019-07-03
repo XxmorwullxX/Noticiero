@@ -7,6 +7,7 @@ export class Config {
     static readonly noticieroToken = process.env.NOTICIERO_TOKEN || "";
     static readonly demoToken = process.env.DEMO_TOKEN || "";
     static readonly dropboxToken = process.env.DROPBOX_TOKEN || "";
+    static readonly elGatoToken = process.env.ELGATO_TOKEN || "";
     static readonly twitter = {
         access_token_key: process.env.TWITTER_ACCESS_TOKEN_KEY || "",
         access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET || "",
