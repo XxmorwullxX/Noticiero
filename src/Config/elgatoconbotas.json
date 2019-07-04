@@ -310,7 +310,9 @@
             "Afirmativo",
             "Si",
             "Yo creo que deberías pensarte esa afirmación",
-            "Si tu lo dices...."
+            "Si tu lo dices....",
+            "no se yo, eh?",
+            "seguro que no deseas el comodin del público o pensarte esa afirmación?"
 
 
         ],
@@ -318,24 +320,27 @@
             "si",
             "claro que si",
             "por supuesto que si",
-            "sí",
-            "afirmativo",
-            "correcto"
+            "sí"
         ]
     },
     "negativo": {
         "responses": [
             "no",
             "como que no?",
-            "Piensalo detenidamente porque esa negativa está mal"
+            "Piensalo detenidamente porque esa negativa está mal",
+            "Ya decía yo que eso era un NO rotundo",
+            "creo que no tienes ni puta idea de lo que estás diciendo",
+            "tengo dudas sobre la veracidad de esa negativa",
+            "si tu lo dices...",
+            "como que no? COMO QUE NO?!?",
+            "no se yo, eh?",
+            "te recomiendo que te pienses esa respuesta"
 
         ],
         "triggers": [
             "no",
             "claro que no",
-            "por supuesto que no",
-            "negativo",
-            "incorrecto"
+            "por supuesto que no"
         ]
     }
 }
