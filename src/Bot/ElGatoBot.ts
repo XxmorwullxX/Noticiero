@@ -27,7 +27,7 @@ export class ElGatoBot extends Bot {
             // @ts-ignore
             if (sentences[group]) {
                 // @ts-ignore
-                if (message.content.match(new RegExp(sentences[group].triggers.join("|"), "i"))) {
+                if (message.content.match(new RegExp('^((?![a-zA-Z0-9])*)(' + sentences[group].triggers.join("|")+ ')+((?![a-zA-Z0-9])*)$', 'gmi'))) {
                     // @ts-ignore
                     const options = sentences[group].responses;
                     this.sendMessage(options, message.channel);
