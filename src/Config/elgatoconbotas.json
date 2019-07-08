@@ -31,7 +31,7 @@
             "¿Hablas castellano, hijo de puta? respeta la ortografía",
             "Si yo contase todo lo que sé, madre mía.....",
             "¿Puedo ser mod del server? creo que lo podría hacer bien",
-            "Mira, no sé quien es el que decide aquí el reparto de poderes pero creo que deberías decirle _*Oye, ¿sabes que Botas es un gran activo del server? Creo que sería un buen mod*_",
+            "Mira, no sé quien es el que decide aquí el reparto de poderes pero creo que deberías decirle:\n_*Oye, ¿sabes que Botas es un gran activo del server? Creo que sería un buen mod*_",
             "Si me ayudas a conseguir el puesto de mod te recompensaré como es debido",
             "¿Sabías que yo antes tenía tierras, fábricas y hasta una familia? la cosa es que lo perdí todo porque.... bueno, no me apetece hablar de ello, disculpa",
             "Hoy creo que estoy un poco triste, un poco de charla me animará",
@@ -88,7 +88,7 @@
             "¿Conoces la historia del pito y la botella? es muy jocosa xd",
             "LeakyPandy es todo un misterio, ¿quien será?\n¿cuales son sus motivaciones?\n¿estará relacionado con los arribistas judeomasonicos?\nMuchas incognitas...",
             "Tu dime a quien hay que rajar que yo saco las garras y le arranco media cara",
-            "Alguien dijo una vez ```pues meh es de persona sin alegría por la vida``` y yo le digo:\n1 - No soy persona, soy gato digital\n2 - meh",
+            "Alguien dijo una vez ```pues meh es de persona sin alegría por la vida``` y yo le digo:\n\n1 - No soy persona, soy gato digital\n2 - meh",
             "Putos Nintenderos, siempre pidiendo cosas y haciendo ruido, son como mi madre, solo que mi madre odia a los Nintenderos",
             "Te veo comiendo cuervo en breve",
             "Mis sentidos gatunos me dicen que esta semana no hay direct",
@@ -130,7 +130,15 @@
             "Hay tantas cosas mal en éste server que no sé ni por donde empezar",
             "Ha resucitado discord!!! solo que la cruz la llevamos nosotros U_U",
             "A mamarla!",
-            "¿SABES LO QUE DEBERÍAMOS HACER? pedirle a Mor que haga una versión VR de mi"
+            "¿SABES LO QUE DEBERÍAMOS HACER? pedirle a Mor que haga una versión VR de mi",
+            "A nadie le importa",
+            "¿Sabías que ayer fui a un restaurante y me dejaron sentado 45 MINUTAZOS sin traerme la cena? pero yo soy todo un gatete caballeroso así que aguardé el momento con sumo respeto y educación",
+            "una vez conocí a un arbusto boxeador Brasileño, fue la primera y ultima vez que me acerqué xD",
+            "HACE UN CALOR DEL CARAJO, AL PRÓXIMO QUE DIGA QUE EL VERANO ES BIEN LE PEGO TAL ZARPAZO QUE SE QUEDA SIN OJOS Y SIN MEDIA CARA, PUTO GILIPOLLAS!!!",
+            "Me encanta venir a Nintendo Majia y encontrarme todo lleno de dramitas, es super guay y demuestra que soy el ente superior de este server",
+            "Pizza y peli en mi queli, ¿te apuntas?",
+            "Did you know that I'm also able to speak English but my creator won't let me because _*reasons*_? BUT I WANT TO BE AN ENGLISH PUSSY, CAN YOU IMAGINE ME IN ENGLISH?",
+            "Eso en Alemán significa vagina de Ballena, hazme caso, hablo 147 idiomas"
 
         ],
         "triggers": []
@@ -160,7 +168,21 @@
             "solo contestaré en presencia de mi abogado, el señor bigotes",
             "si te lo digo pierde la gracia",
             "¿que crees que diría Jesús?",
-            "a veces yo me hago esa misma pregunta en la soledad de la noche"
+            "a veces yo me hago esa misma pregunta en la soledad de la noche",
+            "La respuesta es 42",
+            "Correcto",
+            "Así es",
+            "Mira, te diría que sí pero no estoy seguro, la verdad",
+            "No dispongo de esa información así que prefiero no liarla",
+            "Yo respondería encantado pero claro, a los mods no les va a molar nada la respuesta",
+            "El señor bigotes me ha aconsejado que no haga comentarios antes del juicio",
+            "Esos datos están bajo sumario y si comento algo podría ser delito por revelación de secreto",
+            "La respuesta solo me la sacarás a puñetazos",
+            "LA RESPUESTA TENDRÁS QUE ARRANCARSELA A MI CUPERPO MUERTO, IDIOTA",
+            "¿Siguiente pregunta?",
+            "Madre mía, necesitaríamos la mente de un GENIO para poder obtener una respuesta a tal pregunta, lo siento, yo soy un genio pero también soy gato así que toca joderse",
+            "lol",
+            "Como diría mi yo nocturno... A nadie le importa"
 
         ],
         "triggers": []
@@ -221,7 +243,12 @@
             "Me ha quedado claro que lo que quieres es darme por culo así que, vamos",
             "Ya sabía yo que no te ibas a poder resistir a este cuerpo peludito :3",
             "Pintame como a una de esas fulanas Francesas",
-            "Tu, yo, cama, AHORA"
+            "Tu, yo, cama, AHORA",
+            "Pintame como si fuese una de tus fulanas francesas",
+            "Si tienes pensamientos zoofilicos con mi hermosura, no te apures, es totalmente normal pues soy irresistible",
+            "POLLAZO EN TU BOCA",
+            "Yo también te quiero"
+
 
         ],
         "triggers": [
@@ -312,8 +339,8 @@
             "Yo creo que deberías pensarte esa afirmación",
             "Si tu lo dices....",
             "no se yo, eh?",
-            "seguro que no deseas el comodin del público o pensarte esa afirmación?"
-
+            "seguro que no deseas el comodin del público o pensarte esa afirmación?",
+            ""
 
         ],
         "triggers": [
@@ -334,13 +361,16 @@
             "si tu lo dices...",
             "como que no? COMO QUE NO?!?",
             "no se yo, eh?",
-            "te recomiendo que te pienses esa respuesta"
+            "te recomiendo que te pienses esa respuesta",
+            "nah"
 
         ],
         "triggers": [
             "no",
             "claro que no",
-            "por supuesto que no"
+            "por supuesto que no",
+            "nah"
         ]
     }
 }
+
