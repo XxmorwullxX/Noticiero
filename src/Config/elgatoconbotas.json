@@ -374,18 +374,4 @@
             "nah"
         ]
     },
-    "facha":{
-        "responses": [
-            "Me tienes hasta los mismisimos cojones con lo de llamarme facha, facha lo serás tu, gilipollas",
-            "Mira, como me vuelvas a llamar facha la vamos a tener, ¿eh? que me tienes calentito",
-            "Y A MUCHA HONRA, ARRIBA SAMOA",
-            "Joder, que poca imaginación tienes, no dejas de decir lo mismo una y otra vez",
-            "Aquí solemos decir hola, buenos días tenga usted, pero por lo visto en tu casa os saludáis con FACHA DE MIERDA"
-            
-            ],
-        "triggers": [
-            "facha",
-            "facha de mierda"
-            ]
-    }
 }
