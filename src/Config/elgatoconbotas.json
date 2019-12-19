@@ -182,7 +182,8 @@
             "¿Siguiente pregunta?",
             "Madre mía, necesitaríamos la mente de un GENIO para poder obtener una respuesta a tal pregunta, lo siento, yo soy un genio pero también soy gato así que toca joderse",
             "lol",
-            "Como diría mi yo nocturno... A nadie le importa"
+            "Como diría mi yo nocturno... A nadie le importa",
+            "Colega, estas conversaciones huelen ya a vino, que digo vino, A COÑAC"
 
         ],
         "triggers": []
@@ -211,7 +212,8 @@
             "Mira, como no se me ocurre un insulto apropiado que alcance la magnitud de tu retraso te diré **Penes para tí**",
             "Hostia tú, que pesadilla que puedes llegar a ser, anda, pasa a otra cosa",
             "No te pienso hablar si me sigues insultando así que, tu verás",
-            "Si me hablas de esta forma es que te estoy poniendo nervioso"
+            "Si me hablas de esta forma es que te estoy poniendo nervioso",
+            "te voy comentando que me puedes comer los huevos y si te quedas con hambre continuar con el rabo"
 
         ],
         "triggers": [
@@ -371,6 +373,20 @@
             "por supuesto que no",
             "nah"
         ]
-    }
+    },
+    "facha":{
+        "responses": [
+            "Me tienes hasta los mismisimos cojones con lo de llamarme facha, facha lo serás tu, gilipollas",
+            "Mira, como me vuelvas a llamar facha la vamos a tener, ¿eh? que me tienes calentito",
+            "Y A MUCHA HONRA, ARRIBA SAMOA",
+            "Joder, que poca imaginación tienes, no dejas de decir lo mismo una y otra vez",
+            "Aquí solemos decir hola, buenos días tenga usted, pero por lo visto en tu casa os saludáis con FACHA DE MIERDA"
+            
+            ],
+        "triggers": [
+            "Facha",
+            "Facha de mierda"
+            ]
+    },
 }
 
