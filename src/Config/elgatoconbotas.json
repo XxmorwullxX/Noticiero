@@ -381,7 +381,8 @@
         ],
         "triggers": [
             "menciones",
-            "mención"
+            "mención",
+            "NO NOMBRAR"
         ]
     },
         "facha": {
